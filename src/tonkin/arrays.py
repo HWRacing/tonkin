@@ -21,3 +21,18 @@ def getSubArrayIndex(source, target):
 			return j
 	
 	raise ValueError("Sub-array not found")
+
+def getSubArrayIndices(source, target):
+	output = []
+	
+	# TODO: Ensure that the buffer items don't appear in split
+	buffer = [None] * len(target)
+	
+	for j, i in enumerate(source):
+		buffer = shiftArrayLeft(buffer, 1)
+		buffer[-1] = i
+
+		if buffer == target:
+			output.append(j)
+	
+	return output
