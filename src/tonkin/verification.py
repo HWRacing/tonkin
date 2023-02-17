@@ -25,7 +25,6 @@ def checkHeader(header):
 	if not checkFormat(header):
 		return False
 	elif not checkVersion(header):
-		print("Version")
 		return False
 	elif not checkVendor(header):
 		return False
