@@ -37,6 +37,7 @@ def getSubArrayIndices(source, target):
 	
 	return output
 
+# TODO: Test for different first elements of source
 def splitArrayBySub(source, target):
 	output = []
 	indices = getSubArrayIndices(source, target)
