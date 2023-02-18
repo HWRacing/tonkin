@@ -36,3 +36,23 @@ def getSubArrayIndices(source, target):
 			output.append(j)
 	
 	return output
+
+def splitArrayBySub(source, target):
+	output = []
+	indices = getSubArrayIndices(source, target)
+	
+	# The case where the target does not appear
+	if indices == []:
+		return [source]
+
+	for j, i in enumerate(indices):
+		startOfBlock = i - len(target) + 1
+		
+		if j < len(indices) - 1:
+			endOfBlock = indices[j+1] - len(target) + 1
+		else:
+			endOfBlock = len(source)
+
+		output.append(source[startOfBlock:endOfBlock])
+
+	return output
