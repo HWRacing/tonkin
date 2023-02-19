@@ -16,6 +16,12 @@ def extractVariableName(variableDefinition):
 
 	return "".join(outputBytes)
 
+def getVariableNames(splitVars):
+	output = []
+	for var in splitVars:
+		output.append(extractVariableName(var))
+	return output
+
 # Temporary workaround because I haven't figured out
 # how types are encoded in the EcoCAL data format
 def getTypeFromA2LData(variableName, a2lData):
@@ -35,3 +41,8 @@ def matchWithA2LData(variableNames, a2lData):
 		}
 		output.append(currentVar)
 	return output
+
+def getVariablesFromA2LData(variableSection, a2lData):
+	splitVars = splitVariables(variableSection)
+	variableNames = getVariableNames(splitVars)
+	return matchWithA2LData(variableNames, a2lData)
