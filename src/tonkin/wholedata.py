@@ -1,4 +1,4 @@
-from arrays import getSubArrayIndex
+import arrays
 
 # Returns the header section of a file
 def extractHeaderSec(fileBytes):
@@ -6,5 +6,5 @@ def extractHeaderSec(fileBytes):
 
 def extractVariablesSec(fileBytes):
 	output = fileBytes[228:]
-	end = getSubArrayIndex(output, [0x43, 0x47, 0x1A])
+	end = arrays.getSubArrayIndex(output, [0x43, 0x47, 0x1A])
 	return output[:end]
