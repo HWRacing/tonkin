@@ -17,6 +17,8 @@ def extractVariableName(variableDefinition):
 	return "".join(outputBytes)
 
 def getVariableNames(splitVars):
+	# Don't get the "time" variable
+	splitVars.pop(-1)
 	output = []
 	for var in splitVars:
 		output.append(extractVariableName(var))
