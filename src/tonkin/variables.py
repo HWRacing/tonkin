@@ -1,4 +1,5 @@
 import arrays
+import data
 
 def splitVariables(variableSection):
 	return arrays.splitArrayBySub(variableSection, [0x43, 0x43, 0x3E])
@@ -52,3 +53,13 @@ def getVariablesFromA2LData(variableSection, a2lData):
 	splitVars = splitVariables(variableSection)
 	variableNames = getVariableNames(splitVars)
 	return matchWithA2LData(variableNames, a2lData)
+
+def getVariableLength(variable):
+	return data.typeLengths[variable]
+
+def getVariableLengths(variables):
+	output = []
+	for var in variables:
+		var["Length"] = getVariableLength(var)
+		output.append(var)
+	return output
