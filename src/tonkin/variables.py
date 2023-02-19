@@ -31,7 +31,11 @@ def getTypeFromA2LData(variableName, a2lData):
 		rightCategory = i["Category"] == "Measurement"
 		rightName = i["Name"] == variableName
 		if rightCategory and rightName:
-			return i["Type"]
+			# The type is stored in "conversion method" after the string "test_CM_"
+			# This removes that prefix
+			rawType = i["Conversion Method"]
+			varType = rawType[8:]
+			return varType
 	raise ValueError("Variable " + variableName + " not found in A2L data")
 
 def matchWithA2LData(variableNames, a2lData):
