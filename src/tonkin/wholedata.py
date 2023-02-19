@@ -1,4 +1,4 @@
-from .arrays import getSubArrayIndex
+from arrays import getSubArrayIndex
 
 # Returns the header section of a file
 def extractHeaderSec(fileBytes):
