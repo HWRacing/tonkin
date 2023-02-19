@@ -1,33 +1,35 @@
 import arrays
 import data
 
-def splitVariables(variableSection):
+# Splits the variable definition section into individual definitions
+def _splitVariables(variableSection):
 	return arrays.splitArrayBySub(variableSection, [0x43, 0x43, 0x3E])
 
-def extractVariableName(variableDefinition):
+# Extract the name of a variable from the definition
+def _extractVariableName(definition):
 	outputBytes = []
 	# Remove data before variable name
-	variableDefinition = variableDefinition[66:]
+	definition = definition[66:]
 
 	# Extract name
-	for i in variableDefinition:
+	for i in definition:
 		if i == 0x00:
 			break
 		outputBytes.append(chr(i))
 
 	return "".join(outputBytes)
 
-def getVariableNames(splitVars):
+# Extract names from a list of variable definitions
+def _getVariableNames(splitVars):
 	# Don't get the "time" variable
 	splitVars.pop(-1)
 	output = []
 	for var in splitVars:
-		output.append(extractVariableName(var))
+		output.append(_extractVariableName(var))
 	return output
 
-# Temporary workaround because I haven't figured out
-# how types are encoded in the EcoCAL data format
-def getTypeFromA2LData(variableName, a2lData):
+# Get the type of a variable from it's inclusion in an A2L file
+def _getTypeFromA2LData(variableName, a2lData):
 	for i in a2lData:
 		rightCategory = i["Category"] == "Measurement"
 		rightName = i["Name"] == variableName
@@ -39,27 +41,38 @@ def getTypeFromA2LData(variableName, a2lData):
 			return varType
 	raise ValueError("Variable " + variableName + " not found in A2L data")
 
-def matchWithA2LData(variableNames, a2lData):
+# Take a list of variable names and return a list of variable dicts with types
+def _getTypesFromA2LData(variableNames, a2lData):
 	output = []
 	for variable in variableNames:
 		currentVar = {
 			"Name": variable,
-			"Type": getTypeFromA2LData(variable, a2lData)
+			"Type": _getTypeFromA2LData(variable, a2lData)
 		}
 		output.append(currentVar)
 	return output
 
-def getVariablesFromA2LData(variableSection, a2lData):
-	splitVars = splitVariables(variableSection)
-	variableNames = getVariableNames(splitVars)
-	return matchWithA2LData(variableNames, a2lData)
+# Given a data type, return it's length in bytes
+def getTypeLength(type):
+	return data.typeLengths[type]
 
-def getVariableLength(variable):
-	return data.typeLengths[variable]
+# Given a variable with a type, return the length of the variable in bytes
+def _getVariableLength(variable):
+	return getTypeLength(variable["Type"])
 
-def getVariableLengths(variables):
+# Given a list of variable dicts, returns a list of variable dicts with types
+def _getVariableLengths(variables):
 	output = []
 	for var in variables:
-		var["Length"] = getVariableLength(var)
+		var["Length"] = _getVariableLength(var)
 		output.append(var)
 	return output
+
+# Given a variable section and data from an A2L file, return a list of dicts
+# representing the variables, including types and lengths in bytes
+def getVariableListFromA2L(variableSection, a2lData):
+	split = _splitVariables(variableSection)
+	names = _getVariableNames(split)
+	namesWithTypes = _getTypesFromA2LData(names, a2lData)
+	namesWithTypesAndLengths = _getVariableLengths(namesWithTypes)
+	return namesWithTypesAndLengths
