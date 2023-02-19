@@ -5,7 +5,6 @@ typeLengths = {
 	"int32": 4,
 	"uint8": 1,
 	"uint16": 2,
-	"uint32": 4,
 	"single": 4,
 	"boolean": 1,
 	"fixed": 2,
