@@ -57,3 +57,10 @@ def splitArrayBySub(source, target):
 		output.append(source[startOfBlock:endOfBlock])
 
 	return output
+
+def splitArrayIntoLengthsGen(array, lengths):
+	for i in range(0, len(array), lengths):
+		yield array[i:i + lengths]
+
+def splitArrayIntoLengths(array, lengths):
+	return list(splitArrayIntoLengthsGen(array, lengths))
