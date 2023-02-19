@@ -1,7 +1,7 @@
-from .arrays import splitArrayBySub
+import arrays
 
 def splitVariables(variableSection):
-	return splitArrayBySub(variableSection, [0x43, 0x43, 0x3E])
+	return arrays.splitArrayBySub(variableSection, [0x43, 0x43, 0x3E])
 
 def extractVariableName(variableDefinition):
 	outputBytes = []
