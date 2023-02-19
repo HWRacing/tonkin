@@ -26,3 +26,12 @@ def extractDataStream(fileBytes, prePrepared=False):
 	start = arrays.getSubArrayIndex(output, startMarker) + 1
 	
 	return output[start:]
+
+def splitFileData(fileBytes):
+	header = extractHeaderSec(fileBytes)
+	variables = extractVariablesSec(fileBytes)
+	# Chop the upper sections away
+	upperLength = len(header) + len(variables)
+	fileBytes = fileBytes[upperLength:]
+	dataStream = extractDataStream(fileBytes, prePrepared=True)
+	return header, variables, dataStream
