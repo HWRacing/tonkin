@@ -40,10 +40,6 @@ def _getTypeFromA2LData(variableName, a2lData):
 			rawType = i["Conversion Method"]
 			varType = rawType[8:]
 
-			# Handle fixdt
-			if "fix" in varType:
-				return fixed.getFixedType(varType)
-
 			return varType
 	raise ValueError("Variable " + variableName + " not found in A2L data")
 
