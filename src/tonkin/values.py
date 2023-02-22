@@ -17,7 +17,7 @@ def _convertuint16(uint16B):
 	return int.from_bytes(uint16B, "little", signed=False)
 
 def _convertSingle(singleB):
-	return struct.unpack("f", singleB)
+	return struct.unpack("f", singleB)[0]
 
 def _convertBoolean(boolB):
 	if boolB == b'\x01':
