@@ -4,6 +4,7 @@ import wholedata
 import variables
 import dataStream
 import packets
+import csv
 
 # Given a dat file and an a2l file, returns a list of dicts
 # each representing a single packet
@@ -21,3 +22,27 @@ def readDatFileWithA2L(datFile, a2lFile):
 	for packet in rawPackets:
 		output.append(packets.readRawPacket(packet, variableList))
 	return output
+
+def datFileTo2DArrayA2L(datFile, a2lFile):
+	data = readDatFileWithA2L(datFile, a2lFile)
+	output = []
+	
+	# Get headers
+	headers = []
+	for key in data[0]:
+		headers.append(key)
+	output.append(headers)
+
+	
+	for packet in data:
+		row = []
+		for key in packet:
+			row.append(packet[key])
+		output.append(row)
+	return output
+
+def datFileToCSVWithA2L(datFile, a2lFile, csvFile, delimiter=","):
+	twoD = datFileTo2DArrayA2L(datFile, a2lFile)
+	with open(csvFile, "w+") as f:
+		csvWriter = csv.writer(f, delimiter=delimiter)
+		csvWriter.writerows(twoD)
