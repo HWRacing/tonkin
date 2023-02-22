@@ -54,3 +54,15 @@ def roundUp(n, multiple):
 def getByteLength(bitLength):
 	totalBits = roundUp(bitLength, 8)
 	return totalBits / 8
+
+# Remove the extra bits from the start of a fixdt value
+def chopExtraBits(value, wordLength, byteLength):
+	# The case where the wordLength is a multiple of 8
+	if wordLength / 8 == byteLength:
+		return value
+	
+	bitsToChop = (byteLength * 8) - wordLength
+	binary = bin(value)
+	# Chop an extra 2 chars for "0b"
+	chopped = binary[bitsToChop + 2:]
+	return int(chopped)
