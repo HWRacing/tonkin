@@ -1,4 +1,3 @@
-import variables
 import arrays
 
 def _calculatePacketLength(vars):
