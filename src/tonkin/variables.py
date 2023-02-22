@@ -57,8 +57,8 @@ def _getTypesFromA2LData(variableNames, a2lData):
 # Given a data type, return it's length in bytes
 def getTypeLength(typeName):
 	# If the typeName is a dictionary, meaning it's a fixdt
-	if type(typeName) == type((1, 2, 3)):
-		return fixed.getByteLength(typeName[1])
+	if "fix" in typeName:
+		return fixed.getByteLengthFromName(typeName)
 	return data.typeLengths[typeName]
 
 # Given a variable with a type, return the length of the variable in bytes
