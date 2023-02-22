@@ -80,4 +80,6 @@ def getVariableListFromA2L(variableSection, a2lData):
 	names = _getVariableNames(split)
 	namesWithTypes = _getTypesFromA2LData(names, a2lData)
 	namesWithTypesAndLengths = _getVariableLengths(namesWithTypes)
+	# Add the "time" variable present in all files
+	namesWithTypesAndLengths.append({"Name": "time", "Type": "single", "Length": 4})
 	return namesWithTypesAndLengths
