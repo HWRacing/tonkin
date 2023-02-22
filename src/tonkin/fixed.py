@@ -55,6 +55,10 @@ def getByteLength(bitLength):
 	totalBits = roundUp(bitLength, 8)
 	return totalBits / 8
 
+def getByteLengthFromName(typeName):
+	_, wordLength, _, _ = getFixedType(typeName)
+	return getByteLength(wordLength)
+
 # Remove the extra bits from the start of a fixdt value
 def chopExtraBits(value, wordLength, byteLength):
 	# The case where the wordLength is a multiple of 8
