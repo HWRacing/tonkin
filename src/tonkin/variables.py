@@ -1,5 +1,6 @@
 import arrays
 import data
+import fixed
 
 # Splits the variable definition section into individual definitions
 def _splitVariables(variableSection):
@@ -38,6 +39,11 @@ def _getTypeFromA2LData(variableName, a2lData):
 			# This removes that prefix
 			rawType = i["Conversion Method"]
 			varType = rawType[8:]
+
+			# Handle fixdt
+			if "fix" in varType:
+				return fixed.getFixedType(varType)
+
 			return varType
 	raise ValueError("Variable " + variableName + " not found in A2L data")
 
@@ -53,8 +59,11 @@ def _getTypesFromA2LData(variableNames, a2lData):
 	return output
 
 # Given a data type, return it's length in bytes
-def getTypeLength(type):
-	return data.typeLengths[type]
+def getTypeLength(typeName):
+	# If the typeName is a dictionary, meaning it's a fixdt
+	if type(typeName) == type((1, 2, 3)):
+		return typeName[1]
+	return data.typeLengths[typeName]
 
 # Given a variable with a type, return the length of the variable in bytes
 def _getVariableLength(variable):
