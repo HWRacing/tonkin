@@ -39,3 +39,18 @@ def getFixedType(typeString):
 	bias = _getBias(typeString)
 	return signed, wordLength, totalSlope, bias
 	
+# Round n up to the nearest multiple
+def roundUp(n, multiple):
+	if multiple == 0:
+		return n
+	
+	remainder = n % multiple
+	
+	if remainder == 0:
+		return n
+
+	return n + multiple - remainder
+
+def getByteLength(bitLength):
+	totalBits = roundUp(bitLength, 8)
+	return totalBits / 8
