@@ -46,5 +46,5 @@ def readRawValue(rawValue, var):
 		return _convertSingle(rawValue)
 	elif varType == "boolean":
 		return _convertBoolean(rawValue)
-	elif varType == "fixed":
+	elif "fix" in varType:
 		return _convertFixed(rawValue)
