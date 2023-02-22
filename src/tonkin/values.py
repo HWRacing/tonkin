@@ -1,4 +1,5 @@
 import struct
+import fixed
 
 def _convertint8(int8B):
 	return int.from_bytes(int8B, "little", signed=True)
@@ -24,8 +25,12 @@ def _convertBoolean(boolB):
 	else:
 		return False
 
-def _convertFixed(fixedB):
-	pass
+def _convertFixed(fixedB, rawVarType):
+	signed, length, _, _ = fixed.getFixedType(rawVarType)
+	rawValue = fixed.chopExtraBits(fixedB)
+	if signed == 1:
+		rawValue -= 2 ** length
+	return rawValue
 
 # Given a series of bytes representing a value within a packet
 # and a variable dict, return the value of the 
@@ -47,4 +52,4 @@ def readRawValue(rawValue, var):
 	elif varType == "boolean":
 		return _convertBoolean(rawValue)
 	elif "fix" in varType:
-		return _convertFixed(rawValue)
+		return _convertFixed(rawValue, varType)
