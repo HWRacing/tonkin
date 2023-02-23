@@ -1,9 +1,9 @@
-import fileops
+import tonkin.fileops
 import countach
-import wholedata
-import variables
-import dataStream
-import packets
+import tonkin.wholedata
+import tonkin.variables
+import tonkin.dataStream
+import tonkin.packets
 import csv
 
 # Given a dat file and an a2l file, returns a list of dicts
@@ -11,16 +11,16 @@ import csv
 def readDatFileWithA2L(datFile, a2lFile):
 	# Import the files
 	a2lData = countach.extractData(a2lFile)
-	fileBytes = fileops.importFile(datFile)
+	fileBytes = tonkin.fileops.importFile(datFile)
 	# Split the dat file up into sections
-	header, vars, stream = wholedata.splitFileData(fileBytes)
+	header, vars, stream = tonkin.wholedata.splitFileData(fileBytes)
 	# Extract the variables from the variable section
-	variableList = variables.getVariableListFromA2L(vars, a2lData)
-	rawPackets = dataStream.splitStreamToPackets(stream, variableList)
+	variableList = tonkin.variables.getVariableListFromA2L(vars, a2lData)
+	rawPackets = tonkin.dataStream.splitStreamToPackets(stream, variableList)
 	output = []
 	variableList.reverse()
 	for packet in rawPackets:
-		output.append(packets.readRawPacket(packet, variableList))
+		output.append(tonkin.packets.readRawPacket(packet, variableList))
 	return output
 
 def datFileTo2DArrayA2L(datFile, a2lFile):
