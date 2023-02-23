@@ -1,4 +1,4 @@
-import arrays
+import tonkin.arrays
 
 def _calculatePacketLength(vars):
 	length = 0
@@ -10,4 +10,4 @@ def _calculatePacketLength(vars):
 # get a list of packets from the data stream
 def splitStreamToPackets(stream, vars):
 	packetLength = _calculatePacketLength(vars)
-	return arrays.splitArrayIntoLengths(stream, packetLength)
+	return tonkin.arrays.splitArrayIntoLengths(stream, packetLength)

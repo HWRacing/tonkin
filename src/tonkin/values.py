@@ -1,5 +1,5 @@
 import struct
-import fixed
+import tonkin.fixed
 
 def _convertint8(int8B):
 	return int.from_bytes(int8B, "little", signed=True)
@@ -26,8 +26,8 @@ def _convertBoolean(boolB):
 		return False
 
 def _convertFixed(fixedB, rawVarType):
-	signed, length, _, _ = fixed.getFixedType(rawVarType)
-	rawValue = fixed.chopExtraBits(fixedB)
+	signed, length, _, _ = tonkin.fixed.getFixedType(rawVarType)
+	rawValue = tonkin.fixed.chopExtraBits(fixedB)
 	if signed == 1:
 		rawValue -= 2 ** length
 	return rawValue

@@ -1,10 +1,10 @@
-import arrays
+import tonkin.arrays
 import data
 import fixed
 
 # Splits the variable definition section into individual definitions
 def _splitVariables(variableSection):
-	return arrays.splitArrayBySub(variableSection, [0x43, 0x43, 0x3E])
+	return tonkin.arrays.splitArrayBySub(variableSection, [0x43, 0x43, 0x3E])
 
 # Extract the name of a variable from the definition
 def _extractVariableName(definition):

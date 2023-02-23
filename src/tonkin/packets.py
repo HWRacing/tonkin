@@ -1,4 +1,4 @@
-import values
+import tonkin.values
 
 # Given a series of bytes representing a packet and
 # a list of variable dicts, return a list of bytestrings
@@ -18,6 +18,6 @@ def readRawPacket(rawPacket, vars):
 	packet = {}
 	for index, var in enumerate(vars):
 		varName = var["Name"]
-		value = values.readRawValue(vals[index], var)
+		value = tonkin.values.readRawValue(vals[index], var)
 		packet[varName] = value
 	return packet
