@@ -39,6 +39,8 @@ def _getTypeFromA2LData(variableName, a2lData):
 			# This removes that prefix
 			rawType = i["Conversion Method"]
 			varType = rawType[8:]
+			if "fix" not in varType:
+				varType = varType.replace("_", "")
 
 			return varType
 	raise ValueError("Variable " + variableName + " not found in A2L data")
