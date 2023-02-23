@@ -1,6 +1,6 @@
 import tonkin.arrays
-import data
-import fixed
+import tonkin.data
+import tonkin.fixed
 
 # Splits the variable definition section into individual definitions
 def _splitVariables(variableSection):
@@ -58,8 +58,8 @@ def _getTypesFromA2LData(variableNames, a2lData):
 def getTypeLength(typeName):
 	# If the typeName is a dictionary, meaning it's a fixdt
 	if "fix" in typeName:
-		return fixed.getByteLengthFromName(typeName)
-	return data.typeLengths[typeName]
+		return tonkin.fixed.getByteLengthFromName(typeName)
+	return tonkin.data.typeLengths[typeName]
 
 # Given a variable with a type, return the length of the variable in bytes
 def _getVariableLength(variable):
