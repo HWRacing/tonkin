@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import Tuple, Union
 
 def isSigned(typeStr: str) -> bool:
 	if typeStr[0] == "u":
@@ -38,3 +38,34 @@ def getPropertiesFromFixedTypeStr(typeStr: str) -> Tuple[bool, int, int, int]:
 	bias = getBias(typeStr)
 	return signed, wordLength, totalSlope, bias
 
+# Round n up to the nearest multiple
+def roundUp(n: Union[int, float], multiple: Union[int, float]) -> Union[int, float]:
+	if multiple == 0:
+		return n
+
+	remainder = n % multiple
+
+	if remainder == 0:
+		return n
+
+	return n + multiple - remainder
+
+def getByteLength(bitLength: int) -> int:
+	totalBits = roundUp(bitLength, 8)
+	return int(totalBits / 8)
+
+def getByteLengthFromFixedTypeStr(typeStr: str) -> int:
+	_, wordLength, _, _ = getPropertiesFromFixedTypeStr(typeStr)
+	return getByteLength(wordLength)
+
+# Remove the extra bits from the start of a fixdt value
+def chopExtraBits(value: int, wordLength: int, byteLength: int) -> int:
+	# The case where the wordLength is a multiple of 8
+	if wordLength / 8 == byteLength:
+		return value
+	
+	bitsToChop = (byteLength * 8) - wordLength
+	binary = bin(value)
+	# Chop an extra 2 chars for "0b"
+	chopped = binary[bitsToChop + 2:]
+	return int(chopped)
