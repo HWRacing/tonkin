@@ -1,5 +1,3 @@
-from typing import List
-
 def verifyASCII(source: bytearray, result: str, start: int, stop: int) -> bool:
 	return source[start:stop].decode("ASCII") == result
 
