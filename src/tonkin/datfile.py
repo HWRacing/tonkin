@@ -21,12 +21,12 @@ def extractDataSection(fileBytes: bytearray) -> bytearray:
 	start = lops.getSubListIndex(list(output), list(startMarker)) + 1
 	return output[start:]
 
-def splitFileBytes(fileBytes: bytearray) -> Tuple(bytearray, bytearray, bytearray):
+def splitFileBytes(fileBytes: bytearray) -> Tuple[bytearray, bytearray, bytearray]:
 	headerSection = extractHeaderSection(fileBytes)
 	variableSection = extractVariablesSection(fileBytes)
 	dataSection = extractDataSection(fileBytes)
 	return headerSection, variableSection, dataSection
 
-def getSectionsFromFile(fileName: str) -> Tuple(bytearray, bytearray, bytearray):
+def getSectionsFromFile(fileName: str) -> Tuple[bytearray, bytearray, bytearray]:
 	fileBytes = fops.importFileAsBytes(fileName)
 	return splitFileBytes(fileBytes)
