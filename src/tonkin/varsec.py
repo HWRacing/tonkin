@@ -49,4 +49,6 @@ def getDatVarsFromA2L(variableNames: List[str], a2lData: List[Union[mea.Measurem
 def getVariableListFromA2L(varSection: bytearray, a2lData: List[Union[mea.Measurement, cha.Characteristic]]) -> List[datvar.Datvar]:
 	defs = splitVarSectionToDefs(varSection)
 	variableNames = extractVariableNames(defs)
-	return getDatVarsFromA2L(variableNames, a2lData)
+	variableList = getDatVarsFromA2L(variableNames, a2lData)
+	variableList.append(datvar.Datvar("time", "single"))
+	return variableList
