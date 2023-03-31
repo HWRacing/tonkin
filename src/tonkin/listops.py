@@ -38,3 +38,24 @@ def getSubListIndices(source: List[Any], target: List[Any]) -> List[int]:
 			output.append(j)
 	
 	return output
+
+# TODO: Test for different first elements of source
+def splitListBySub(source: List[Any], target: List[Any]) -> List[List[Any]]:
+	output = []
+	indices = getSubListIndices(source, target)
+	
+	# The case where the target does not appear
+	if indices == []:
+		return [source]
+
+	for j, i in enumerate(indices):
+		startOfBlock = i - len(target) + 1
+		
+		if j < len(indices) - 1:
+			endOfBlock = indices[j+1] - len(target) + 1
+		else:
+			endOfBlock = len(source)
+
+		output.append(source[startOfBlock:endOfBlock])
+
+	return output
