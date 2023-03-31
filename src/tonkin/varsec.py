@@ -1,4 +1,5 @@
 import tonkin.listops as lops
+import tonkin.datvar as datvar
 from typing import List, Union
 from countach import measurement as mea
 from countach import characteristic as cha
@@ -30,10 +31,11 @@ def extractVariableNames(varDefs: List[bytearray]) -> List[str]:
 		output.append(extractVariableName(var))
 	return output
 
-def getTypeFromA2L(variableName: str, a2lData: List[Union[mea.Measurement, cha.Characteristic]]) -> str:
+# Given a variable name and the A2L data, return a datvar object representing the variable
+def getDatVarFromA2L(variableName: str, a2lData: List[Union[mea.Measurement, cha.Characteristic]]) -> datvar.Datvar:
 	for i in a2lData:
 		rightCategory = type(i) == mea.Measurement
 		rightName = i.name == variableName
 		if rightCategory and rightName:
-			return str(i.dataType)
+			return datvar.Datvar(variableName, i.dataType)
 	raise ValueError("Variable " + variableName + " not found in A2L data")
