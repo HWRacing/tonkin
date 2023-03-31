@@ -1,4 +1,4 @@
-from typing import List, Any
+from typing import List, Any, Iterator
 
 def shiftListLeft(input: List[Any], shift: int) -> List[Any]:
 	# Bring large numbers down to smaller equivalents
@@ -59,3 +59,10 @@ def splitListBySub(source: List[Any], target: List[Any]) -> List[List[Any]]:
 		output.append(source[startOfBlock:endOfBlock])
 
 	return output
+
+def splitListIntoLengthsGen(input: List[Any], lengths: int) -> Iterator[List[Any]]:
+	for i in range(0, len(input), lengths):
+		yield input[i:i + lengths]
+
+def splitListIntoLengths(input: List[Any], lengths: int) -> List[Any]:
+	return list(splitListIntoLengths(input, lengths))
