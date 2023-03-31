@@ -8,3 +8,18 @@ def shiftListLeft(input: List[Any], shift: int) -> List[Any]:
 	for i in range(0, shift):
 		input.append(input.pop(0))
 	return input
+
+# Given a source list and a target list, returns the index of where the target
+# list appears within the source list (returns the index of the final value)
+def getSubListIndex(source: List[Any], target: List[Any]) -> int:
+	# TODO: Ensure that the buffer items don't appear in split
+	buffer = [None] * len(target)
+	
+	for j, i in enumerate(source):
+		buffer = shiftListLeft(buffer, 1)
+		buffer[-1] = i
+
+		if buffer == target:
+			return j
+	
+	raise ValueError("Sub-list not found")
