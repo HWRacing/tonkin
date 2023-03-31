@@ -23,3 +23,18 @@ def getSubListIndex(source: List[Any], target: List[Any]) -> int:
 			return j
 	
 	raise ValueError("Sub-list not found")
+
+def getSubListIndices(source: List[Any], target: List[Any]) -> List[int]:
+	output = []
+
+	# TODO: Ensure that the buffer items don't appear in split
+	buffer = [None] * len(target)
+	
+	for j, i in enumerate(source):
+		buffer = shiftListLeft(buffer, 1)
+		buffer[-1] = i
+
+		if buffer == target:
+			output.append(j)
+	
+	return output
