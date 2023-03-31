@@ -1,4 +1,5 @@
 import tonkin.listops as lops
+import tonkin.fileops as fops
 from typing import Tuple
 
 def extractHeaderSection(fileBytes: bytearray) -> bytearray:
@@ -25,3 +26,7 @@ def splitFileBytes(fileBytes: bytearray) -> Tuple(bytearray, bytearray, bytearra
 	variableSection = extractVariablesSection(fileBytes)
 	dataSection = extractDataSection(fileBytes)
 	return headerSection, variableSection, dataSection
+
+def getSectionsFromFile(fileName: str) -> Tuple(bytearray, bytearray, bytearray):
+	fileBytes = fops.importFileAsBytes(fileName)
+	return splitFileBytes(fileBytes)
