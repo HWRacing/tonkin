@@ -1,4 +1,5 @@
 import tonkin.listops as lops
+from typing import Tuple
 
 def extractHeaderSection(fileBytes: bytearray) -> bytearray:
 	return fileBytes[0:228]
@@ -18,3 +19,9 @@ def extractDataSection(fileBytes: bytearray) -> bytearray:
 	# The index of the first byte of the data stream
 	start = lops.getSubListIndex(list(output), list(startMarker)) + 1
 	return output[start:]
+
+def splitFileBytes(fileBytes: bytearray) -> Tuple(bytearray, bytearray, bytearray):
+	headerSection = extractHeaderSection(fileBytes)
+	variableSection = extractVariablesSection(fileBytes)
+	dataSection = extractDataSection(fileBytes)
+	return headerSection, variableSection, dataSection
