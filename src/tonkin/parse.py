@@ -32,4 +32,4 @@ def datToCSVWithA2L(datFile: str, a2lFile: str, outputFile: str):
 		writer = csv.DictWriter(csvFile, fieldnames=headers)
 		writer.writeheader()
 		for row in data:
-			writer.writerow(row.values())
+			writer.writerow(row)
