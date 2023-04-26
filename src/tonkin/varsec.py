@@ -51,4 +51,5 @@ def getVariableListFromA2L(varSection: bytearray, a2lData: List[Union[mea.Measur
 	variableNames = extractVariableNames(defs)
 	variableList = getDatVarsFromA2L(variableNames, a2lData)
 	variableList.append(datvar.Datvar("time", "single"))
+	variableList.reverse()
 	return variableList
