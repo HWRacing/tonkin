@@ -33,3 +33,13 @@ def datToCSVWithA2L(datFile: str, a2lFile: str, outputFile: str):
 		writer.writeheader()
 		for row in data:
 			writer.writerow(row)
+
+def datTo2DWithA2L(datFile: str, a2lFile: str) -> List[List[Union[int, float, bool]]]:
+	data = readDatFileWithA2L(datFile, a2lFile)
+	headers = list(data[0].keys())
+	output = []
+	output.append(headers)
+	for i in data:
+		row = [i.get(key, "") for key in headers]
+		output.append(row)
+	return output
