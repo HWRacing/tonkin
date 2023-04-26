@@ -22,3 +22,5 @@ class Datvar:
 			return 1
 		elif self.dataType == "time":
 			return 4
+		else:
+			raise ValueError(f"{self.dataType} is not a valid type string")
