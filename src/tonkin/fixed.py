@@ -39,7 +39,7 @@ def getPropertiesFromFixedTypeStr(typeStr: str) -> Tuple[bool, int, int, int]:
 	return signed, wordLength, totalSlope, bias
 
 # Round n up to the nearest multiple
-def roundUp(n: Union[int, float], multiple: Union[int, float]) -> Union[int, float]:
+def roundUp(n: Union[int, float, bool], multiple: Union[int, float, bool]) -> Union[int, float, bool]:
 	if multiple == 0:
 		return n
 

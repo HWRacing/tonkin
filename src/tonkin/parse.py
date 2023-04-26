@@ -8,7 +8,7 @@ import tonkin.packets
 import csv
 from typing import List, Dict, Tuple, Union
 
-def readDatFileWithA2L(datFile: str, a2lFile: str) -> List[Dict[str, Union[int, float]]]:
+def readDatFileWithA2L(datFile: str, a2lFile: str) -> List[Dict[str, Union[int, float, bool]]]:
 	# Extract the data from the file
 	a2lData = countach.parse.parseFile(a2lFile)
 	fileBytes = fops.importFileAsBytes(datFile)
