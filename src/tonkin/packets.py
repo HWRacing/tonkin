@@ -17,3 +17,9 @@ def readRawPacket(rawPacket: bytearray, vars: List[tonkin.datvar.Datvar]) -> Dic
 		value = tonkin.values.readRawValue(vals[index], var.dataType)
 		packet[varName] = value
 	return packet
+
+def readPackets(packets: List[bytearray], vars: List[tonkin.datvar.Datvar]) -> List[Dict]:
+	output = []
+	for packet in packets:
+		output.append(readRawPacket(packet, vars))
+	return output
