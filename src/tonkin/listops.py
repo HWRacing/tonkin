@@ -65,4 +65,4 @@ def splitListIntoLengthsGen(input: List[Any], lengths: int) -> Iterator[List[Any
 		yield input[i:i + lengths]
 
 def splitListIntoLengths(input: List[Any], lengths: int) -> List[Any]:
-	return list(splitListIntoLengths(input, lengths))
+	return list(splitListIntoLengthsGen(input, lengths))

@@ -5,7 +5,7 @@ from typing import List, Dict, Union
 def _splitPacket(rawPacket: bytearray, vars: List[tonkin.datvar.Datvar]) -> List[bytearray]:
 	splitPacket = []
 	for var in vars:
-		splitPacket.append(rawPacket[:var.getLength()])
+		splitPacket.append(bytearray(rawPacket[:var.getLength()]))
 		rawPacket = rawPacket[var.getLength():]
 	return splitPacket
 
