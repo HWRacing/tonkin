@@ -1,0 +1,1126 @@
+/******************************************************************************
+ *
+ *  ASAP2 file:     test.a2l
+ *
+ * Sponsored License - for use in support of a program or activity
+ * sponsored by MathWorks.  Not for government, commercial or other
+ * non-sponsored organizational use. 
+ * 
+ * Code generation for model "test".
+ *
+ * Model version              : 1.1685
+ * Simulink Coder version : 8.14 (R2018a) 06-Feb-2018
+ * C source code generated on : Thu Feb  9 16:40:29 2023
+ * 
+ * Target selection: MPC5644A.tlc
+ * Embedded hardware selection: Freescale->MPC55xx
+ * Code generation objectives: Unspecified
+ * Validation result: Not run
+ *
+ * (add additional file header information here)
+ *
+ ******************************************************************************/
+
+ASAP2_VERSION 1 31 /* Version 1.31 */
+
+/begin PROJECT ProjectName "Project Comment Goes Here"
+
+  /begin HEADER "Header Comments go here"
+
+  /end HEADER
+
+
+  /begin MODULE ModuleName "Module Comment Goes Here"
+
+    /begin A2ML
+      /****************************************************************************/
+      /* EcoCoder 56xx v2.8.4 R25 Target:EV2274A*/
+      /* CCP-TYPE:Configurable CCP-En:1 CCP-CAN:CAN_CTRL_C CCP-CAN-Baud:500kbps*/
+      /*PGCANAEn:NoUse PGCANAStation:NoUse PGCANABaud:NoUse PGCANACRO:NoUse PGCANADTO:NoUse*/
+      /*PGCANBEn:NoUse PGCANBStation:NoUse PGCANBBaud:NoUse PGCANBCRO:NoUse PGCANBDTO:NoUse*/
+      /*PGCANCEn:NoUse PGCANCStation:NoUse PGCANCBaud:NoUse PGCANCCRO:NoUse PGCANCDTO:NoUse*/
+      /*   ASAP2 Meta Language for CCP CAN Calibration Protocol V2.1              */
+      /*   Assumes ASAP2 V1.3 or later                                            */
+      /*                                                                          */
+      /*   AML Version V2.4, 27.04.1999                                           */
+      /*                                                                          */
+      /*   Vector Informatik, Zaiser                                              */
+      /*   Hewlett Packard, Krueger                                               */
+      /*   ETAS, Maier                                                            */
+      /*   SIEMENS Automotive, Stuhler                                            */
+      /*                                                                          */
+      /*   Datatypes:                                                             */
+      /*                                                                          */
+      /*   A2ML       ASAP2          Windows  Erlaeuuterung                       */
+      /*   ----------------------------------------------------------------       */
+      /*   uchar      UBYTE          BYTE     unsigned 8 Bit                      */
+      /*   char       SBYTE          char     signed 8 Bit                        */
+      /*   uint       UWORD          WORD     unsigned integer 16 Bit             */
+      /*   int        SWORD          int      signed integer 16 Bit               */
+      /*   ulong      ULONG          DWORD    unsigned integer 32 Bit             */
+      /*   long       SLONG          LONG     signed integer 32 Bit               */
+      /*   float      FLOAT32_IEEE            float 32 Bit                        */
+      /*                                                                          */
+      /****************************************************************************/
+      block "IF_DATA" taggedunion if_data {
+        "ASAP1B_CCP" taggedstruct {
+
+          /* Beschreibung der DAQ-Listen */
+          (block "SOURCE" struct {
+
+            struct {
+              char[101]; /* Name of the DAQ-List (data acquisition list),
+       measurement source .        */
+
+                /* If the DAQ-Liste only supports one fixed ECU 
+       sampling rate, it can be declared below
+       to achieve compatibility with the ASAP2 standard.
+       Otherwise description of the possible ECU
+       sampling rates in QP_BLOB      */
+              int; /* Period definition : Basic scaling unit in 
+       CSE defined in ASAP1b (CSE=Code for Scaling Unit) */
+              long; /* Period definition : Rate in Scaling Units */
+            };
+
+
+            taggedstruct {
+
+              "DISPLAY_IDENTIFIER" char[32];
+
+              block "QP_BLOB" struct {
+
+                uint; /* Number of the DAQ-List 0..n               */
+
+                taggedstruct {
+                  "LENGTH" uint; /* Length of the DAQ-Liste, maximum number of
+       the useable ODTs                          */
+
+                  "CAN_ID_VARIABLE"; /* CAN-Message-ID is variable                */
+
+                  "CAN_ID_FIXED" ulong;
+                    /* CAN-Message-ID of the DTOs is fixed,
+       Default DTO
+       Bit31 = 1: extended Identifier
+       Bit31 = 0: standard Identifier            */
+
+                    /* Not applied if the ECU uses the DTM-Id    */
+
+                  ("RASTER" uchar)*;
+                    /* Supported CCP Event Channel Names
+       of this DAQ List */
+
+                  ("EXCLUSIVE" int)*;
+                    /* Exclusion of other DAQ-Lists              */
+
+                  "REDUCTION_ALLOWED";
+                    /* Data reduction possible                   */
+
+                  "FIRST_PID" uchar; /* First Packet ID (PID) of the DAQ List     */
+                };
+              };
+            };
+          })*;
+
+
+            /* Description of the available ECU Sampling Rates (Event Channels)      */
+          (block "RASTER" struct {
+
+            char[101]; /* CCP Event Channel Name                               */
+            char[9]; /* Short Display Name of the Event Channel Name         */
+            uchar; /* Event Channel No., used for CCP START_STOP)          */
+            int; /* Period definition :  basic scaling unit in CSE
+       as defined in ASAP1b                                 */
+            long; /* ECU sample rate of the event channel,
+       period definition based on the basic scaling unit    */
+
+            taggedstruct {
+              ("EXCLUSIVE" uchar)*;
+                /* Exclusion of other CCP Event Channels                */
+            };
+
+          })*;
+
+            /* Group several event channels to form one combined event */
+            /* e.g. group all cylinder synchronous events to one combined element */
+          (block "EVENT_GROUP" struct {
+
+            char[101]; /* Event group name */
+            char[9]; /* Short name for the event group */
+            taggedstruct {
+              ("RASTER" uchar)*;
+            };
+              /* all event channels beloging to group
+       (CCP Event Channel Numbers for START_STOP)               */
+          })*;
+
+
+            /* Description of the authentification process */
+          block "SEED_KEY" struct {
+            char[256]; /* Name of the Seed&Key DLL for CAL Priviledge,
+       including file-Extension without path */
+            char[256]; /* Name of the Seed&Key DLL for DAQ Priviledge,
+       including file-Extension without path */
+            char[256]; /* Name of the Seed&Key DLL for PGM Priviledge,
+       including file-Extension without path */
+          };
+
+
+            /* Description of the checksum calculation process */
+          block "CHECKSUM" struct {
+            char[256]; /* Name of the Checksum DLL representing the ECU Algorithm, 
+       including file-Extension without path */
+          };
+
+
+          block "TP_BLOB" struct {
+
+            uint; /* CCP Version,       High Byte: Version
+       Low Byte : subversion (dec.)            */
+            uint; /* Blob-Version,      High Byte: Version
+       Low Byte : subversion (dec.)            */
+            ulong; /* CAN-Message ID for 'Transmitting to ECU (CRM)'
+       Bit31 = 1: extended Identifier
+       Bit31 = 0: standard Identifier          */
+            ulong; /* CAN-Message ID for 'Receiving from ECU (DTM)'
+       Bit31 = 1: extended Identifier
+       Bit31 = 0: standard Identifier          */
+            uint; /* Logical CCP-Address of the (station address)           */
+            uint; /* Byte order of Multiple-byte-items
+       1 = high Byte first, 2 = low byte first */
+            taggedstruct {
+
+              block "CAN_PARAM" struct {
+                uint; /* Quartz freq. of the elec. control unit  */
+                uchar; /* BTR0                                    */
+                uchar; /* BTR1                                    */
+              };
+
+              "BAUDRATE" ulong; /* Baud rate in Hz.                        */
+              "SAMPLE_POINT" uchar; /* sampling point of time in percent       */
+              "SAMPLE_RATE" uchar; /* number of samples per Bit (1 oder 3)    */
+              "BTL_CYCLES" uchar; /* number of BTL-cycles                    */
+              "SJW" uchar; /* SJW-parameter in BTL-cycles             */
+              "SYNC_EDGE" enum {
+                "SINGLE" = 0, /* Synchronisation only on fallende edge   */
+                "DUAL" = 1 /* Synchr. on falling and rising edge      */
+              };
+
+              "DAQ_MODE" enum { /* mode of cylcic data acquisition         */
+                "ALTERNATING" = 0, /* ECU is sending one ODT per cycle        */
+                "BURST" = 1 /* ECU is sending a complete DAQ           */
+              };
+
+              "BYTES_ONLY"; /* ECU supports max. elements of one Byte size */
+                /* otherwise ECU supports different dataTypes  */
+
+              "RESUME_SUPPORTED"; /* ECU supports the Resume function            */
+
+              "STORE_SUPPORTED"; /* ECU supports the Store function             */
+
+              "CONSISTENCY" enum {
+                "DAQ" = 0, /* consistency of a complete DAQ ist guaranteed */
+                "ODT" = 1 /* consistency of a complete ODT ist guaranteed */
+              };
+
+              "ADDRESS_EXTENSION" enum { /* address extension                      */
+                "DAQ" = 0, /* ECU supports only one Address extension
+       within an DAQ                    */
+                "ODT" = 1 /* ECU supports only one Address extension
+       within an ODT                    */
+              };
+
+              block "CHECKSUM_PARAM" struct {
+                uint; /* checksum calculation procedure
+       standard types not yet defined,
+       if greater of equal 1000 : manufacturer specific  */
+
+                ulong; /* Maximum block length used by an ASAP1a-CCP
+       command, for checksum calculation procedure  */
+
+                taggedstruct {
+                  "CHECKSUM_CALCULATION" enum {
+                    "ACTIVE_PAGE" = 0,
+                    "BIT_OR_WITH_OPT_PAGE" = 1
+                  };
+                };
+              };
+
+              (block "DEFINED_PAGES" struct {
+                struct {
+                  uint; /* Logical No. of the memory page (1,2,..)   */
+                  char[101]; /* Name of the memory page                   */
+                  uint; /* Adress-Extension of the memory page (only
+       Low Byte significant)                     */
+                  ulong; /* Base address of the memory page           */
+                  ulong; /* Length of the memory page in Bytes        */
+                };
+                taggedstruct {
+                  "RAM"; /* memory page in RAM */
+                  "ROM"; /* memory page in ROM */
+                  "FLASH"; /* memory page in FLASH */
+                  "EEPROM"; /* memory page in EEPROM */
+                  "RAM_INIT_BY_ECU"; /* memory page is initialised by ECU start-up */
+                  "RAM_INIT_BY_TOOL"; /* RAM- memory page is initialised by the MCS */
+                  "AUTO_FLASH_BACK"; /* RAM memory page is automatically flashed back */
+                  "FLASH_BACK"; /* feature available to flash back the RAM memory page */
+                  "DEFAULT"; /* memory page is standard (fallback mode) */
+                };
+              })*;
+
+              ("OPTIONAL_CMD" uint)*; /* CCP-Code of the optional command available
+       in the ECU. It is recommended to declare all
+       non-standard ECU commands here */
+            };
+          };
+          ("ADDRESS_MAPPING" struct
+          {
+            ulong;
+            ulong;
+            ulong;
+          })*;
+            /* for CHARACTERISTIC and AXIS_PTS and MEMORY_LAYOUT */
+          "DP_BLOB" struct {
+            uint; /* Address extension of the calibration data
+       (only Low Byte significant) */
+            ulong; /* Base address of the calibration data */
+            ulong; /* Number of Bytes belonging to the calibration data  */
+          };
+
+            /* for MEASUREMENT */
+          "KP_BLOB" struct {
+            uint; /* Address extension of the online data
+       (only Low Byte significant) */
+            ulong; /* Base address of the online data   */
+            ulong; /* Number of Bytes belonging to the online data (1,2 or 4) */
+            taggedstruct {
+              ("RASTER" uchar)*;
+                /* Array of event channel initialization values */
+            };
+          };
+        };
+      };
+    /end A2ML
+    /begin MOD_PAR "_default_ModParComment"
+      /begin MEMORY_SEGMENT _RAMCAL
+        "calibration_ram"
+        DATA
+        RAM
+        INTERN
+        0x40000000
+        0x00008000
+        -1 -1 -1 -1 -1
+      /end MEMORY_SEGMENT
+      /begin MEMORY_SEGMENT _ROMCAL
+        "calibration_rom"
+        DATA
+        FLASH
+        INTERN
+        0x00FD0000
+        0x00008000
+        -1 -1 -1 -1 -1
+        /begin IF_DATA ASAP1B_CCP
+            ADDRESS_MAPPING /*orig_adr:*/ 0x00FD0000 /*mapping_adr:*/ 0x40000000 /*length:*/ 0x00008000
+        /end IF_DATA
+      /end MEMORY_SEGMENT
+      /begin MEMORY_SEGMENT _RAMMSR
+        "measurement_ram"
+        DATA
+        RAM
+        INTERN
+        0x40000000
+        0x00060000
+        -1 -1 -1 -1 -1
+      /end MEMORY_SEGMENT
+      /begin MEMORY_SEGMENT _CODE
+        "ecu_code"
+        CODE
+        FLASH
+        INTERN
+        0x01000008
+        0x1FE000
+        -1 -1 -1 -1 -1
+      /end MEMORY_SEGMENT
+    /end MOD_PAR
+    /*0x00020000 0x000E0000*/
+
+
+    /begin IF_DATA ASAP1B_CCP /* Specific definition for CCP          */
+        /begin SOURCE /* Description of a DAQ                 */
+          /* (Data Acquisition List)              */
+          "20ms" /* Name                                 */
+          3 /* Scaling Unit: 3 = 1 ms               */
+          20 /* Rate in Scaling Unit: 125            */
+          DISPLAY_IDENTIFIER DAQ2
+          /begin QP_BLOB /* The QP-BLOB specify the behavior of  */
+            /* the corresponding DAQ-List           */
+            1 /* Number of DAQ-list                   */
+            LENGTH 0x20 /* Number of ODT's, which can be in-    */
+              /* serted to this DAQ                   */
+            CAN_ID_FIXED 0x101 /* CAN-ID for measuring this DAQ        */
+            RASTER 1 /* ECU event-number according to event- */
+              /* number by the keyword RASTER.        */
+            REDUCTION_ALLOWED /* Data reduction possible              */
+            FIRST_PID 0x3C /* First PID for this DAQ               */
+          /end QP_BLOB
+        /end SOURCE
+        /begin SOURCE /* Description of a DAQ                 */
+          /* (Data Acquisition List)              */
+          "100ms" /* Name                                 */
+          3 /* Scaling Unit: 3 = 1 ms               */
+          100 /* Rate in Scaling Unit: 125            */
+          DISPLAY_IDENTIFIER DAQ3
+          /begin QP_BLOB /* The QP-BLOB specify the behavior of  */
+            /* the corresponding DAQ-List           */
+            2 /* Number of DAQ-list                   */
+            LENGTH 0x30 /* Number of ODT's, which can be in-    */
+              /* serted to this DAQ                   */
+            CAN_ID_FIXED 0x101 /* CAN-ID for measuring this DAQ        */
+            RASTER 2 /* ECU event-number according to event- */
+              /* number by the keyword RASTER.        */
+            REDUCTION_ALLOWED /* Data reduction possible              */
+            FIRST_PID 0x78 /* First PID for this DAQ               */
+          /end QP_BLOB
+        /end SOURCE
+        /begin RASTER /* ECU-event specification              */
+          "20ms" /* Name of the ECU-event                */
+          "20ms" /* Shortname                            */
+          1 /* Number of ECU-event                  */
+          3 /* Scaling Unit: 3 = 1 ms               */
+          20 /* Rate in Scaling Unit: 125            */
+            /* Refresh rate = 1 * 125 ms = 125ms    */
+            /* Codes for Scaling units (CSE) look at*/
+            /* ASAP1b Specification                 */
+        /end RASTER
+        /begin RASTER /* ECU-event specification              */
+          "100ms" /* Name of the ECU-event                */
+          "100ms" /* Shortname                            */
+          2 /* Number of ECU-event                  */
+          3 /* Scaling Unit: 3 = 1 ms               */
+          100 /* Rate in Scaling Unit: 125            */
+            /* Refresh rate = 1 * 125 ms = 125ms    */
+            /* Codes for Scaling units (CSE) look at*/
+            /* ASAP1b Specification                 */
+        /end RASTER
+        /begin SEED_KEY
+          ""
+          ""
+          ""
+        /end SEED_KEY
+
+        /begin CHECKSUM
+          "CRC16.dll"
+        /end CHECKSUM
+
+        /begin TP_BLOB
+          0x0201
+          0x0204
+          0x100
+          0x101
+          0x112
+          1
+          BAUDRATE 500000
+          SAMPLE_POINT 70
+          SAMPLE_RATE 1
+          BTL_CYCLES 10
+          SJW 1
+          SYNC_EDGE SINGLE
+          DAQ_MODE 0 /* 1 = one DAQ per cycle                   */
+          CONSISTENCY 1 /* 1 = ODT consistant                      */
+          ADDRESS_EXTENSION 0 /* 0 = 1 extension per DAQ (not supported) */
+          RESUME_SUPPORTED /* necessary for ResumeBit support         */
+          STORE_SUPPORTED /**/ /* Not supported                           */
+
+          /begin CHECKSUM_PARAM
+            0x9001
+            0xffffffff
+            CHECKSUM_CALCULATION ACTIVE_PAGE
+          /end CHECKSUM_PARAM
+
+          /begin DEFINED_PAGES
+            0x00
+            "RAM_PAGE"
+            0x00
+            0x40000000
+            0x00008000
+            RAM
+            RAM_INIT_BY_ECU
+          /end DEFINED_PAGES
+
+          /*/begin DEFINED_PAGES
+        0x01
+        "FLASH"
+        0x00
+        0x00FD0000
+        0x00008000
+        FLASH
+      /end DEFINED_PAGES*/
+
+          OPTIONAL_CMD 0X5
+          OPTIONAL_CMD 0X8
+          OPTIONAL_CMD 0X9
+          OPTIONAL_CMD 0XC
+          OPTIONAL_CMD 0XD
+          OPTIONAL_CMD 0XE /**/
+          OPTIONAL_CMD 0XF
+          OPTIONAL_CMD 0X10
+          OPTIONAL_CMD 0X11
+          OPTIONAL_CMD 0X12
+          OPTIONAL_CMD 0X13
+          OPTIONAL_CMD 0X18
+          OPTIONAL_CMD 0X19
+          OPTIONAL_CMD 0X20
+          OPTIONAL_CMD 0X21
+          OPTIONAL_CMD 0X22
+          OPTIONAL_CMD 0X23
+
+
+        /end TP_BLOB
+    /end IF_DATA
+
+    /begin MOD_COMMON
+      "" /* Comment */
+      ALIGNMENT_BYTE 1
+      ALIGNMENT_WORD 1
+      ALIGNMENT_LONG 1
+      ALIGNMENT_FLOAT32_IEEE 1
+      ALIGNMENT_FLOAT64_IEEE 1
+      BYTE_ORDER MSB_FIRST
+      DEPOSIT ABSOLUTE
+    /end MOD_COMMON
+
+
+    /begin RECORD_LAYOUT Scalar_BOOLEAN
+      FNC_VALUES 1 UBYTE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Scalar_UBYTE
+      FNC_VALUES 1 UBYTE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Scalar_BYTE
+      FNC_VALUES 1 SBYTE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Scalar_UWORD
+      FNC_VALUES 1 UWORD COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Scalar_SWORD
+      FNC_VALUES 1 SWORD COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Scalar_ULONG
+      FNC_VALUES 1 ULONG COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Scalar_LONG
+      FNC_VALUES 1 SLONG COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Scalar_FLOAT32_IEEE
+      FNC_VALUES 1 FLOAT32_IEEE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Scalar_FLOAT64_IEEE
+      FNC_VALUES 1 FLOAT64_IEEE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+
+    /begin RECORD_LAYOUT Lookup1D_BOOLEAN
+      FNC_VALUES 1 UBYTE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_X_BOOLEAN
+      AXIS_PTS_X 1 UBYTE INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_BYTE
+      FNC_VALUES 1 SBYTE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_X_BYTE
+      AXIS_PTS_X 1 SBYTE INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_UBYTE
+      FNC_VALUES 1 UBYTE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_X_UBYTE
+      AXIS_PTS_X 1 UBYTE INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_UWORD
+      FNC_VALUES 1 UWORD COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_X_UWORD
+      AXIS_PTS_X 1 UWORD INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_WORD
+      FNC_VALUES 1 SWORD COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_X_WORD
+      AXIS_PTS_X 1 SWORD INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_ULONG
+      FNC_VALUES 1 ULONG COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_X_ULONG
+      AXIS_PTS_X 1 ULONG INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_SLONG
+      FNC_VALUES 1 SLONG COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_X_LONG
+      AXIS_PTS_X 1 SLONG INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_FLOAT32_IEEE
+      FNC_VALUES 1 FLOAT32_IEEE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_X_FLOAT32_IEEE
+      AXIS_PTS_X 1 FLOAT32_IEEE INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_FLOAT64_IEEE
+      FNC_VALUES 1 FLOAT64_IEEE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup1D_X_FLOAT64_IEEE
+      AXIS_PTS_X 1 FLOAT64_IEEE INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_BOOLEAN
+      FNC_VALUES 1 UBYTE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_X_BOOLEAN
+      AXIS_PTS_X 1 UBYTE INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_UBYTE
+      FNC_VALUES 1 UBYTE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_X_UBYTE
+      AXIS_PTS_X 1 UBYTE INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_BYTE
+      FNC_VALUES 1 SBYTE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_X_BYTE
+      AXIS_PTS_X 1 SBYTE INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_UWORD
+      FNC_VALUES 1 UWORD COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_X_UWORD
+      AXIS_PTS_X 1 UWORD INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_WORD
+      FNC_VALUES 1 SWORD COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_X_WORD
+      AXIS_PTS_X 1 SWORD INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_ULONG
+      FNC_VALUES 1 ULONG COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_X_ULONG
+      AXIS_PTS_X 1 ULONG INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_LONG
+      FNC_VALUES 1 SLONG COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_X_LONG
+      AXIS_PTS_X 1 SLONG INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_FLOAT32_IEEE
+      FNC_VALUES 1 FLOAT32_IEEE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_X_FLOAT32_IEEE
+      AXIS_PTS_X 1 FLOAT32_IEEE INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_FLOAT64_IEEE
+      FNC_VALUES 1 FLOAT64_IEEE COLUMN_DIR DIRECT
+    /end RECORD_LAYOUT
+
+    /begin RECORD_LAYOUT Lookup2D_X_FLOAT64_IEEE
+      AXIS_PTS_X 1 FLOAT64_IEEE INDEX_INCR DIRECT
+    /end RECORD_LAYOUT
+
+
+    /begin CHARACTERISTIC
+      /* Name                   */ singleinp
+      /* Long Identifier        */ ""
+      /* Type                   */ VALUE
+      /* ECU Address            */ 0xfd0010 /* @ECU_Address@singleinp@ */
+      /* Record Layout          */ Scalar_FLOAT32_IEEE
+      /* Maximum Difference     */ 0
+      /* Conversion Method      */ test_CM_single
+      /* Lower Limit            */ -3.4E+38
+      /* Upper Limit            */ 3.4E+38
+    /end CHARACTERISTIC
+
+
+    /begin CHARACTERISTIC
+      /* Name                   */ int32inp
+      /* Long Identifier        */ ""
+      /* Type                   */ VALUE
+      /* ECU Address            */ 0xfd0008 /* @ECU_Address@int32inp@ */
+      /* Record Layout          */ Scalar_ULONG
+      /* Maximum Difference     */ 0
+      /* Conversion Method      */ test_CM_uint32
+      /* Lower Limit            */ 0
+      /* Upper Limit            */ 4294967295
+    /end CHARACTERISTIC
+
+
+    /begin CHARACTERISTIC
+      /* Name                   */ fixedinp
+      /* Long Identifier        */ ""
+      /* Type                   */ VALUE
+      /* ECU Address            */ 0xfd0002 /* @ECU_Address@fixedinp@ */
+      /* Record Layout          */ Scalar_SWORD
+      /* Maximum Difference     */ 0
+      /* Conversion Method      */ test_CM_int16
+      /* Lower Limit            */ -32768
+      /* Upper Limit            */ 32767
+    /end CHARACTERISTIC
+
+
+    /begin CHARACTERISTIC
+      /* Name                   */ int16inp
+      /* Long Identifier        */ ""
+      /* Type                   */ VALUE
+      /* ECU Address            */ 0xfd0004 /* @ECU_Address@int16inp@ */
+      /* Record Layout          */ Scalar_SWORD
+      /* Maximum Difference     */ 0
+      /* Conversion Method      */ test_CM_int16
+      /* Lower Limit            */ -32768
+      /* Upper Limit            */ 32767
+    /end CHARACTERISTIC
+
+
+    /begin CHARACTERISTIC
+      /* Name                   */ uint16inp
+      /* Long Identifier        */ ""
+      /* Type                   */ VALUE
+      /* ECU Address            */ 0xfd0014 /* @ECU_Address@uint16inp@ */
+      /* Record Layout          */ Scalar_UWORD
+      /* Maximum Difference     */ 0
+      /* Conversion Method      */ test_CM_uint16
+      /* Lower Limit            */ 0
+      /* Upper Limit            */ 65535
+    /end CHARACTERISTIC
+
+
+    /begin CHARACTERISTIC
+      /* Name                   */ boolinp
+      /* Long Identifier        */ ""
+      /* Type                   */ VALUE
+      /* ECU Address            */ 0xfd0000 /* @ECU_Address@boolinp@ */
+      /* Record Layout          */ Scalar_BOOLEAN
+      /* Maximum Difference     */ 0
+      /* Conversion Method      */ test_CM_boolean
+      /* Lower Limit            */ 0
+      /* Upper Limit            */ 1
+    /end CHARACTERISTIC
+
+
+    /begin CHARACTERISTIC
+      /* Name                   */ int8inp
+      /* Long Identifier        */ ""
+      /* Type                   */ VALUE
+      /* ECU Address            */ 0xfd000c /* @ECU_Address@int8inp@ */
+      /* Record Layout          */ Scalar_BYTE
+      /* Maximum Difference     */ 0
+      /* Conversion Method      */ test_CM_int8
+      /* Lower Limit            */ -128
+      /* Upper Limit            */ 127
+    /end CHARACTERISTIC
+
+
+    /begin CHARACTERISTIC
+      /* Name                   */ uint8inp
+      /* Long Identifier        */ ""
+      /* Type                   */ VALUE
+      /* ECU Address            */ 0xfd0016 /* @ECU_Address@uint8inp@ */
+      /* Record Layout          */ Scalar_UBYTE
+      /* Maximum Difference     */ 0
+      /* Conversion Method      */ test_CM_uint8
+      /* Lower Limit            */ 0
+      /* Upper Limit            */ 255
+    /end CHARACTERISTIC
+
+
+
+    /begin MEASUREMENT
+      /* Name                   */ singleval
+      /* Long identifier        */ ""
+      /* Data type              */ FLOAT32_IEEE
+      /* Conversion method      */ test_CM_single
+      /* Resolution (Not used)  */ 0
+      /* Accuracy (Not used)    */ 0
+      /* Lower limit            */ -3.4E+38
+      /* Upper limit            */ 3.4E+38
+      ECU_ADDRESS 0x40008010 /* @ECU_Address@singleval@ */
+    /end MEASUREMENT
+
+
+    /begin MEASUREMENT
+      /* Name                   */ int32val
+      /* Long identifier        */ ""
+      /* Data type              */ SLONG
+      /* Conversion method      */ test_CM_int32
+      /* Resolution (Not used)  */ 0
+      /* Accuracy (Not used)    */ 0
+      /* Lower limit            */ -2147483648
+      /* Upper limit            */ 2147483647
+      ECU_ADDRESS 0x40008008 /* @ECU_Address@int32val@ */
+    /end MEASUREMENT
+
+
+    /begin MEASUREMENT
+      /* Name                   */ uint16val
+      /* Long identifier        */ ""
+      /* Data type              */ UWORD
+      /* Conversion method      */ test_CM_uint16
+      /* Resolution (Not used)  */ 0
+      /* Accuracy (Not used)    */ 0
+      /* Lower limit            */ 0
+      /* Upper limit            */ 65535
+      ECU_ADDRESS 0x40008014 /* @ECU_Address@uint16val@ */
+    /end MEASUREMENT
+
+
+    /begin MEASUREMENT
+      /* Name                   */ int16val
+      /* Long identifier        */ ""
+      /* Data type              */ SWORD
+      /* Conversion method      */ test_CM_int16
+      /* Resolution (Not used)  */ 0
+      /* Accuracy (Not used)    */ 0
+      /* Lower limit            */ -32768
+      /* Upper limit            */ 32767
+      ECU_ADDRESS 0x40008006 /* @ECU_Address@int16val@ */
+    /end MEASUREMENT
+
+
+    /begin MEASUREMENT
+      /* Name                   */ fixedval
+      /* Long identifier        */ ""
+      /* Data type              */ SWORD
+      /* Conversion method      */ test_CM_int16
+      /* Resolution (Not used)  */ 0
+      /* Accuracy (Not used)    */ 0
+      /* Lower limit            */ -32768
+      /* Upper limit            */ 32767
+      ECU_ADDRESS 0x40008004 /* @ECU_Address@fixedval@ */
+    /end MEASUREMENT
+
+
+    /begin MEASUREMENT
+      /* Name                   */ uint8val
+      /* Long identifier        */ ""
+      /* Data type              */ UBYTE
+      /* Conversion method      */ test_CM_uint8
+      /* Resolution (Not used)  */ 0
+      /* Accuracy (Not used)    */ 0
+      /* Lower limit            */ 0
+      /* Upper limit            */ 255
+      ECU_ADDRESS 0x40008016 /* @ECU_Address@uint8val@ */
+    /end MEASUREMENT
+
+
+    /begin MEASUREMENT
+      /* Name                   */ int8val
+      /* Long identifier        */ ""
+      /* Data type              */ SBYTE
+      /* Conversion method      */ test_CM_int8
+      /* Resolution (Not used)  */ 0
+      /* Accuracy (Not used)    */ 0
+      /* Lower limit            */ -128
+      /* Upper limit            */ 127
+      ECU_ADDRESS 0x4000800c /* @ECU_Address@int8val@ */
+    /end MEASUREMENT
+
+
+    /begin MEASUREMENT
+      /* Name                   */ boolval
+      /* Long identifier        */ ""
+      /* Data type              */ UBYTE
+      /* Conversion method      */ test_CM_boolean
+      /* Resolution (Not used)  */ 0
+      /* Accuracy (Not used)    */ 0
+      /* Lower limit            */ 0
+      /* Upper limit            */ 1
+      ECU_ADDRESS 0x40008002 /* @ECU_Address@boolval@ */
+    /end MEASUREMENT
+
+
+    /begin MEASUREMENT
+      /* Name                   */ PwrM_flgKeyOnDelay
+      /* Long identifier        */ ""
+      /* Data type              */ UBYTE
+      /* Conversion method      */ test_CM_boolean
+      /* Resolution (Not used)  */ 0
+      /* Accuracy (Not used)    */ 0
+      /* Lower limit            */ 0
+      /* Upper limit            */ 1
+      ECU_ADDRESS 0x40008000 /* @ECU_Address@PwrM_flgKeyOnDelay@ */
+    /end MEASUREMENT
+
+
+    /begin MEASUREMENT
+      /* Name                   */ PwrM_flgKeyOnRaw
+      /* Long identifier        */ ""
+      /* Data type              */ UBYTE
+      /* Conversion method      */ test_CM_boolean
+      /* Resolution (Not used)  */ 0
+      /* Accuracy (Not used)    */ 0
+      /* Lower limit            */ 0
+      /* Upper limit            */ 1
+      ECU_ADDRESS 0x40008001 /* @ECU_Address@PwrM_flgKeyOnRaw@ */
+    /end MEASUREMENT
+
+    /begin COMPU_METHOD
+      /* Name of CompuMethod    */ test_CM_single
+      /* Long identifier        */ "Q = V"
+      /* Conversion Type        */ RAT_FUNC
+      /* Format                 */ "%8.6"
+      /* Units                  */ ""
+      /* Coefficients           */ COEFFS 0 1 0 0 0 1
+    /end COMPU_METHOD
+
+    /begin COMPU_METHOD
+      /* Name of CompuMethod    */ test_CM_uint32
+      /* Long identifier        */ "Q = V"
+      /* Conversion Type        */ RAT_FUNC
+      /* Format                 */ "%10.0"
+      /* Units                  */ ""
+      /* Coefficients           */ COEFFS 0 1 0 0 0 1
+    /end COMPU_METHOD
+
+    /begin COMPU_METHOD
+      /* Name of CompuMethod    */ test_CM_int16
+      /* Long identifier        */ "Q = V"
+      /* Conversion Type        */ RAT_FUNC
+      /* Format                 */ "%5.0"
+      /* Units                  */ ""
+      /* Coefficients           */ COEFFS 0 1 0 0 0 1
+    /end COMPU_METHOD
+
+    /begin COMPU_METHOD
+      /* Name of CompuMethod    */ test_CM_uint16
+      /* Long identifier        */ "Q = V"
+      /* Conversion Type        */ RAT_FUNC
+      /* Format                 */ "%5.0"
+      /* Units                  */ ""
+      /* Coefficients           */ COEFFS 0 1 0 0 0 1
+    /end COMPU_METHOD
+
+    /begin COMPU_METHOD
+      /* Name of CompuMethod    */ test_CM_boolean
+      /* Long identifier        */ "Q = V"
+      /* Conversion Type        */ RAT_FUNC
+      /* Format                 */ "%1.0"
+      /* Units                  */ ""
+      /* Coefficients           */ COEFFS 0 1 0 0 0 1
+    /end COMPU_METHOD
+
+    /begin COMPU_METHOD
+      /* Name of CompuMethod    */ test_CM_int8
+      /* Long identifier        */ "Q = V"
+      /* Conversion Type        */ RAT_FUNC
+      /* Format                 */ "%3.0"
+      /* Units                  */ ""
+      /* Coefficients           */ COEFFS 0 1 0 0 0 1
+    /end COMPU_METHOD
+
+    /begin COMPU_METHOD
+      /* Name of CompuMethod    */ test_CM_uint8
+      /* Long identifier        */ "Q = V"
+      /* Conversion Type        */ RAT_FUNC
+      /* Format                 */ "%3.0"
+      /* Units                  */ ""
+      /* Coefficients           */ COEFFS 0 1 0 0 0 1
+    /end COMPU_METHOD
+
+    /begin COMPU_METHOD
+      /* Name of CompuMethod    */ test_CM_int32
+      /* Long identifier        */ "Q = V"
+      /* Conversion Type        */ RAT_FUNC
+      /* Format                 */ "%10.0"
+      /* Units                  */ ""
+      /* Coefficients           */ COEFFS 0 1 0 0 0 1
+    /end COMPU_METHOD
+
+    /begin GROUP
+      /* Name                   */ test
+      /* Long identifier        */ "test"
+      /* Root                    */ ROOT
+      /begin SUB_GROUP
+      Root_00__Vehicle_Control_Solution
+      Root_Power_Management_Example
+      /end SUB_GROUP
+    /end GROUP
+
+    /begin GROUP
+      /* Name                   */ Root_00__Vehicle_Control_Solution
+      /* Long identifier        */ "test/00. Vehicle Control Solution"
+      /begin SUB_GROUP
+      S1_Read_Calibration
+      S1_Read_Calibration1
+      S1_Read_Calibration2
+      S1_Read_Calibration3
+      S1_Read_Calibration4
+      S1_Read_Calibration5
+      S1_Read_Calibration6
+      S1_Read_Calibration7
+      /end SUB_GROUP
+      /begin REF_MEASUREMENT
+      int32val
+      /end REF_MEASUREMENT
+    /end GROUP
+
+    /begin GROUP
+      /* Name                   */ Root_Power_Management_Example
+      /* Long identifier        */ "test/Power Management Example"
+      /begin SUB_GROUP
+      S5_Power_Off_Management
+      /end SUB_GROUP
+    /end GROUP
+
+    /begin GROUP
+      /* Name                   */ S1_Read_Calibration
+      /* Long identifier        */ "test/00. Vehicle Control Solution/Read Calibration"
+      /begin REF_CHARACTERISTIC
+      singleinp
+      /end REF_CHARACTERISTIC
+      /begin REF_MEASUREMENT
+      singleval
+      /end REF_MEASUREMENT
+    /end GROUP
+
+    /begin GROUP
+      /* Name                   */ S1_Read_Calibration1
+      /* Long identifier        */ "test/00. Vehicle Control Solution/Read Calibration1"
+      /begin REF_CHARACTERISTIC
+      int8inp
+      /end REF_CHARACTERISTIC
+      /begin REF_MEASUREMENT
+      int8val
+      /end REF_MEASUREMENT
+    /end GROUP
+
+    /begin GROUP
+      /* Name                   */ S1_Read_Calibration2
+      /* Long identifier        */ "test/00. Vehicle Control Solution/Read Calibration2"
+      /begin REF_CHARACTERISTIC
+      uint8inp
+      /end REF_CHARACTERISTIC
+      /begin REF_MEASUREMENT
+      uint8val
+      /end REF_MEASUREMENT
+    /end GROUP
+
+    /begin GROUP
+      /* Name                   */ S1_Read_Calibration3
+      /* Long identifier        */ "test/00. Vehicle Control Solution/Read Calibration3"
+      /begin REF_CHARACTERISTIC
+      int16inp
+      /end REF_CHARACTERISTIC
+      /begin REF_MEASUREMENT
+      int16val
+      /end REF_MEASUREMENT
+    /end GROUP
+
+    /begin GROUP
+      /* Name                   */ S1_Read_Calibration4
+      /* Long identifier        */ "test/00. Vehicle Control Solution/Read Calibration4"
+      /begin REF_CHARACTERISTIC
+      uint16inp
+      /end REF_CHARACTERISTIC
+      /begin REF_MEASUREMENT
+      uint16val
+      /end REF_MEASUREMENT
+    /end GROUP
+
+    /begin GROUP
+      /* Name                   */ S1_Read_Calibration5
+      /* Long identifier        */ "test/00. Vehicle Control Solution/Read Calibration5"
+      /begin REF_CHARACTERISTIC
+      int32inp
+      /end REF_CHARACTERISTIC
+    /end GROUP
+
+    /begin GROUP
+      /* Name                   */ S1_Read_Calibration6
+      /* Long identifier        */ "test/00. Vehicle Control Solution/Read Calibration6"
+      /begin REF_CHARACTERISTIC
+      boolinp
+      /end REF_CHARACTERISTIC
+      /begin REF_MEASUREMENT
+      boolval
+      /end REF_MEASUREMENT
+    /end GROUP
+
+    /begin GROUP
+      /* Name                   */ S1_Read_Calibration7
+      /* Long identifier        */ "test/00. Vehicle Control Solution/Read Calibration7"
+      /begin REF_CHARACTERISTIC
+      fixedinp
+      /end REF_CHARACTERISTIC
+      /begin REF_MEASUREMENT
+      fixedval
+      /end REF_MEASUREMENT
+    /end GROUP
+
+    /begin GROUP
+      /* Name                   */ S5_Power_Off_Management
+      /* Long identifier        */ "test/Power Management Example/Power Off Management"
+      /begin SUB_GROUP
+      S130_Get_flgKeyOn
+      /end SUB_GROUP
+      /begin REF_MEASUREMENT
+      PwrM_flgKeyOnDelay
+      /end REF_MEASUREMENT
+    /end GROUP
+
+    /begin GROUP
+      /* Name                   */ S130_Get_flgKeyOn
+      /* Long identifier        */ "test/Power Management Example/Power Off Management/Get flgKeyOn"
+      /begin REF_MEASUREMENT
+      PwrM_flgKeyOnRaw
+      /end REF_MEASUREMENT
+    /end GROUP
+
+
+  /end MODULE
+
+
+/end PROJECT
+/* (add any file trailer comments here) */
+/* EOF test.a2l */
