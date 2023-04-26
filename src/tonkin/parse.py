@@ -1,4 +1,4 @@
-import countach
+import countach.parse
 import tonkin.fileops as fops
 import tonkin.verification
 import tonkin.datfile
